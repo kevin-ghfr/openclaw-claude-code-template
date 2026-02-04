@@ -2,6 +2,18 @@
 
 Template Docker pour utiliser **OpenClaw** (anciennement Clawdbot) avec votre **abonnement Claude Code CLI** au lieu de payer des crédits API.
 
+## TL;DR - Démarrage en 30 secondes
+
+```bash
+git clone https://github.com/kevin-ghfr/openclaw-claude-code-template.git
+cd openclaw-claude-code-template
+cp .env.example .env
+# Éditer .env et mettre votre token (obtenu via: claude setup-token)
+docker compose up -d
+```
+
+Votre API est prête sur `http://localhost:18789` !
+
 ## Contexte
 
 ### Le problème
@@ -54,23 +66,30 @@ cd openclaw-claude-code-template
 
 ### 2. Configurer le token
 
-Créer un fichier `.env` :
+**C'est tout ce qu'il y a à faire :**
 
 ```bash
+# Copier le template
 cp .env.example .env
+
+# Éditer et remplacer VOTRE_TOKEN_ICI par votre token
+nano .env   # ou vim, code, etc.
 ```
 
-Éditer `.env` et remplacer `VOTRE_TOKEN_ICI` par votre token :
-
+Le fichier `.env` doit contenir :
 ```env
 CLAUDE_CODE_OAUTH_TOKEN=sk-ant-oat01-xxxxxxxxxxxxx
 ```
+
+> **Note :** Le `.env` est ignoré par git (listé dans `.gitignore`), vos credentials restent privés.
 
 ### 3. Démarrer
 
 ```bash
 docker compose up -d
 ```
+
+C'est prêt ! L'API est accessible sur `http://localhost:18789`.
 
 ### 4. Tester
 
