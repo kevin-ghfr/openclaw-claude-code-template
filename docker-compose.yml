@@ -1,0 +1,48 @@
+# OpenClaw + Claude Code CLI
+# Utilise votre abonnement Claude Pro/Max au lieu de l'API payante
+#
+# Le token OAuth (sk-ant-oat01-...) ne peut pas etre utilise directement avec l'API.
+# Il doit passer par Claude Code CLI (installe dans le conteneur).
+#
+# Usage:
+# 1. cp .env.example .env
+# 2. Editer .env avec votre token OAuth (valide 1 an)
+# 3. docker compose up -d
+# 4. docker compose logs -f
+
+services:
+  openclaw:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openclaw
+    restart: unless-stopped
+
+    ports:
+      # Gateway API
+      - "18789:18789"
+
+    volumes:
+      # Workspace persistant
+      - workspace:/home/node/workspace
+
+    environment:
+      - HOME=/home/node
+
+      # OBLIGATOIRE: Token OAuth Claude Code (validite 1 an)
+      # Obtenu via: claude setup-token
+      - CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN}
+
+      # OPTIONNEL: Config OpenClaw complete (JSON)
+      # Si non defini, config par defaut avec API chatCompletions activee
+      - OPENCLAW_CONFIG=${OPENCLAW_CONFIG:-}
+
+    healthcheck:
+      test: ['CMD-SHELL', 'pgrep -f openclaw || exit 1']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+
+volumes:
+  workspace:
