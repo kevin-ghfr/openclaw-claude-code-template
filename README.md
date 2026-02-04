@@ -289,9 +289,36 @@ C'est normal. OpenClaw affiche ce message mais notre entrypoint restaure le prof
 
 ---
 
+## Utiliser un fork stable (optionnel)
+
+Par défaut, le Dockerfile installe OpenClaw via npm (`openclaw@latest`). Si vous préférez utiliser une version fixe/stable :
+
+### Option 1 : Utiliser notre fork de référence
+
+Modifiez le `Dockerfile` :
+
+```dockerfile
+# Remplacer :
+RUN npm install -g openclaw@latest
+
+# Par :
+RUN git clone --depth 1 https://github.com/kevin-ghfr/openclaw.git /opt/openclaw && \
+    cd /opt/openclaw && npm install && npm install -g .
+```
+
+### Option 2 : Créer votre propre fork
+
+1. Forkez [kevin-ghfr/openclaw](https://github.com/kevin-ghfr/openclaw) ou [l'officiel](https://github.com/clawdbot/clawdbot)
+2. Modifiez le Dockerfile pour pointer vers votre fork
+
+Cela vous permet de contrôler les mises à jour et d'éviter les breaking changes.
+
+---
+
 ## Références
 
-- [OpenClaw GitHub](https://github.com/clawdbot/clawdbot) - Repo officiel
+- [OpenClaw officiel](https://github.com/clawdbot/clawdbot) - Repo upstream
+- [Fork de référence](https://github.com/kevin-ghfr/openclaw) - Fork stable pour ce template
 - [Claude Code CLI](https://www.npmjs.com/package/@anthropic-ai/claude-code) - Package npm
 
 ---
